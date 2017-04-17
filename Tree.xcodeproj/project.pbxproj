@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		BB53AAF81EA42D8C002667DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB53AAF71EA42D8C002667DB /* AppDelegate.swift */; };
-		BB53AAFA1EA42D8C002667DB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = BB53AAF91EA42D8C002667DB /* GameScene.sks */; };
-		BB53AAFC1EA42D8C002667DB /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = BB53AAFB1EA42D8C002667DB /* Actions.sks */; };
 		BB53AAFE1EA42D8C002667DB /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB53AAFD1EA42D8C002667DB /* GameScene.swift */; };
 		BB53AB001EA42D8C002667DB /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB53AAFF1EA42D8C002667DB /* GameViewController.swift */; };
 		BB53AB031EA42D8C002667DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB53AB011EA42D8C002667DB /* Main.storyboard */; };
@@ -17,6 +15,7 @@
 		BB53AB081EA42D8C002667DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB53AB061EA42D8C002667DB /* LaunchScreen.storyboard */; };
 		BB53AB131EA42D8D002667DB /* TreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB53AB121EA42D8D002667DB /* TreeTests.swift */; };
 		BB53AB1E1EA42D8D002667DB /* TreeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB53AB1D1EA42D8D002667DB /* TreeUITests.swift */; };
+		BBEF7FB81EA44BC80015530C /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7FB71EA44BC80015530C /* Branch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,21 +37,20 @@
 
 /* Begin PBXFileReference section */
 		BB53AAF41EA42D8C002667DB /* Tree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tree.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB53AAF71EA42D8C002667DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BB53AAF91EA42D8C002667DB /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		BB53AAFB1EA42D8C002667DB /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		BB53AAF71EA42D8C002667DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Tree/AppDelegate.swift; sourceTree = "<group>"; };
 		BB53AAFD1EA42D8C002667DB /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		BB53AAFF1EA42D8C002667DB /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		BB53AAFF1EA42D8C002667DB /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameViewController.swift; path = Tree/GameViewController.swift; sourceTree = "<group>"; };
 		BB53AB021EA42D8C002667DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		BB53AB041EA42D8C002667DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB53AB041EA42D8C002667DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Tree/Assets.xcassets; sourceTree = "<group>"; };
 		BB53AB071EA42D8C002667DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		BB53AB091EA42D8C002667DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB53AB091EA42D8C002667DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tree/Info.plist; sourceTree = "<group>"; };
 		BB53AB0E1EA42D8D002667DB /* TreeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB53AB121EA42D8D002667DB /* TreeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeTests.swift; sourceTree = "<group>"; };
 		BB53AB141EA42D8D002667DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB53AB191EA42D8D002667DB /* TreeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TreeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB53AB1D1EA42D8D002667DB /* TreeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeUITests.swift; sourceTree = "<group>"; };
 		BB53AB1F1EA42D8D002667DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BBEF7FB71EA44BC80015530C /* Branch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +81,8 @@
 		BB53AAEB1EA42D8C002667DB = {
 			isa = PBXGroup;
 			children = (
+				BBEF7FBB1EA469D90015530C /* Image */,
+				BB53AB2B1EA42F5B002667DB /* others */,
 				BB53AAF61EA42D8C002667DB /* Tree */,
 				BB53AB111EA42D8D002667DB /* TreeTests */,
 				BB53AB1C1EA42D8D002667DB /* TreeUITests */,
@@ -103,15 +103,8 @@
 		BB53AAF61EA42D8C002667DB /* Tree */ = {
 			isa = PBXGroup;
 			children = (
-				BB53AAF71EA42D8C002667DB /* AppDelegate.swift */,
-				BB53AAF91EA42D8C002667DB /* GameScene.sks */,
-				BB53AAFB1EA42D8C002667DB /* Actions.sks */,
+				BBEF7FB61EA44BAA0015530C /* model */,
 				BB53AAFD1EA42D8C002667DB /* GameScene.swift */,
-				BB53AAFF1EA42D8C002667DB /* GameViewController.swift */,
-				BB53AB011EA42D8C002667DB /* Main.storyboard */,
-				BB53AB041EA42D8C002667DB /* Assets.xcassets */,
-				BB53AB061EA42D8C002667DB /* LaunchScreen.storyboard */,
-				BB53AB091EA42D8C002667DB /* Info.plist */,
 			);
 			path = Tree;
 			sourceTree = "<group>";
@@ -132,6 +125,34 @@
 				BB53AB1F1EA42D8D002667DB /* Info.plist */,
 			);
 			path = TreeUITests;
+			sourceTree = "<group>";
+		};
+		BB53AB2B1EA42F5B002667DB /* others */ = {
+			isa = PBXGroup;
+			children = (
+				BB53AAFF1EA42D8C002667DB /* GameViewController.swift */,
+				BB53AAF71EA42D8C002667DB /* AppDelegate.swift */,
+				BB53AB011EA42D8C002667DB /* Main.storyboard */,
+				BB53AB041EA42D8C002667DB /* Assets.xcassets */,
+				BB53AB061EA42D8C002667DB /* LaunchScreen.storyboard */,
+				BB53AB091EA42D8C002667DB /* Info.plist */,
+			);
+			name = others;
+			sourceTree = "<group>";
+		};
+		BBEF7FB61EA44BAA0015530C /* model */ = {
+			isa = PBXGroup;
+			children = (
+				BBEF7FB71EA44BC80015530C /* Branch.swift */,
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
+		BBEF7FBB1EA469D90015530C /* Image */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Image;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,6 +223,7 @@
 				TargetAttributes = {
 					BB53AAF31EA42D8C002667DB = {
 						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = GT6CEXGDKZ;
 						ProvisioningStyle = Automatic;
 					};
 					BB53AB0D1EA42D8D002667DB = {
@@ -242,10 +264,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB53AB031EA42D8C002667DB /* Main.storyboard in Resources */,
-				BB53AAFA1EA42D8C002667DB /* GameScene.sks in Resources */,
 				BB53AB051EA42D8C002667DB /* Assets.xcassets in Resources */,
 				BB53AB081EA42D8C002667DB /* LaunchScreen.storyboard in Resources */,
-				BB53AAFC1EA42D8C002667DB /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB53AAFE1EA42D8C002667DB /* GameScene.swift in Sources */,
+				BBEF7FB81EA44BC80015530C /* Branch.swift in Sources */,
 				BB53AB001EA42D8C002667DB /* GameViewController.swift in Sources */,
 				BB53AAF81EA42D8C002667DB /* AppDelegate.swift in Sources */,
 			);
@@ -314,6 +335,7 @@
 				BB53AB021EA42D8C002667DB /* Base */,
 			);
 			name = Main.storyboard;
+			path = Tree;
 			sourceTree = "<group>";
 		};
 		BB53AB061EA42D8C002667DB /* LaunchScreen.storyboard */ = {
@@ -322,6 +344,7 @@
 				BB53AB071EA42D8C002667DB /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = Tree;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -426,6 +449,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GT6CEXGDKZ;
 				INFOPLIST_FILE = Tree/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.suicidecanwait.Tree;
@@ -438,6 +462,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GT6CEXGDKZ;
 				INFOPLIST_FILE = Tree/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.suicidecanwait.Tree;
@@ -519,6 +544,7 @@
 				BB53AB241EA42D8D002667DB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BB53AB251EA42D8D002667DB /* Build configuration list for PBXNativeTarget "TreeTests" */ = {
 			isa = XCConfigurationList;
@@ -527,6 +553,7 @@
 				BB53AB271EA42D8D002667DB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BB53AB281EA42D8D002667DB /* Build configuration list for PBXNativeTarget "TreeUITests" */ = {
 			isa = XCConfigurationList;
@@ -535,6 +562,7 @@
 				BB53AB2A1EA42D8D002667DB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

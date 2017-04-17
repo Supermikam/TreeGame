@@ -1,89 +1,125 @@
+
+
 //
-//  GameScene.swift
-//  Tree
+//  ClassicGameScene.swift
+//  Slow
 //
-//  Created by Ruohan Liu on 17/04/17.
+//  Created by Ruohan Liu on 20/03/17.
 //  Copyright © 2017 Ruohan Liu. All rights reserved.
 //
 
+import UIKit
 import SpriteKit
-import GameplayKit
 
-class GameScene: SKScene {
+extension CGFloat {
+    func degrees_to_radians() -> CGFloat {
+        return CGFloat(Double.pi) * self / 180.0
+    }
+}
+
+extension CGPoint{
+    static func - (left: CGPoint, right: CGPoint) -> CGFloat{
+       return  sqrt((left.x - right.x)*(left.x-right.x)+(left.y-right.y)*(left.y-right.y))
+    }
+}
+
+extension Double {
+    func degrees_to_radians() -> Double {
+        return Double.pi * self / 180.0
+    }
+}
+
+class GameScene : SKScene{
+    //MARK: Type Alias
+    typealias TreeData = [(position:[CGPoint], angle: Double, depth: Int)]
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    // MARK: Display property
+
+    let blue = UIColor(red: 0.0, green: 0.7373, blue: 1.0, alpha: 1.0)
+    let BKGround = UIColor(colorLiteralRed: 0.4, green: 0.5, blue: 0.6, alpha: 1.0)
     
+    // MARK: Node
+    let gameBoard = SKNode()
+    var treeData = TreeData()
+    
+    
+    // MARK: API
     override func didMove(to view: SKView) {
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
+        
+        //Set the Back Ground Color
+        self.backgroundColor = BKGround
+        self.addChild(gameBoard)
+        
+        let x = self.frame.size.width / 2
+        let y = self.frame.size.height * 0.1
+        
+        startTree(x1: x, y1: y, angle: 90, depth: 9)
+        
+//        drawTree()
+        
+        
+    }
+    
+    func startTree(x1: CGFloat, y1: CGFloat, angle: Double, depth:Int){
+        
+        let ang = angle.degrees_to_radians()
+        let x2:CGFloat = x1 + ( cos(CGFloat(ang)) as CGFloat) * CGFloat(depth) * (self.frame.width / 60)
+        let y2:CGFloat = y1 + ( sin(CGFloat(ang)) as CGFloat) * CGFloat(depth) * (self.frame.width / 60)
+
+        let origin = CGPoint(x:x1,y:y1)
+        let end = CGPoint(x:x2,y:y2)
+        
+        generateBranchNode(origin: origin, end: end, depth: depth, angle: angle)
+        
+
+       
+    }
+    
+    func generateNewBranch(x1: CGFloat, y1: CGFloat, angle: Double, depth:Int){
+        if depth  == 0 {
+            return
         }
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        startTree(x1: x1, y1: y1, angle: angle-20, depth: depth)
+        startTree(x1: x1, y1: y1, angle: angle+20, depth: depth)
+    }
+    
+    func generateBranchNode(origin:CGPoint, end: CGPoint, depth:Int, angle:Double){
+        let branch = Branch(origin: origin, end: end, depth: depth, angle: angle, color: blue)
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
+        let scaleAction = SKAction.scaleY(to: 1.0, duration: 2.0)
+        branch.yScale = 0.01
+        branch.run(scaleAction)
+        {
+            () -> Void in
+            self.generateNewBranch(x1: end.x, y1: end.y, angle: angle, depth: depth-1)
+        };
+        gameBoard.addChild(branch)
     }
-    
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
-        
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-    }
+  
+  
+//    func generateTree(x1: CGFloat, y1: CGFloat, angle: Double, depth:Int) {
+//        
+//        if depth == 0 {
+//            return
+//        }
+//        let ang = angle.degrees_to_radians()
+//        let x2:CGFloat = x1 + ( cos(CGFloat(ang)) as CGFloat) * CGFloat(depth) * (self.frame.width / 60)
+//        let y2:CGFloat = y1 + ( sin(CGFloat(ang)) as CGFloat) * CGFloat(depth) * (self.frame.width / 60)
+//        
+//        let origin = CGPoint(x:x1,y:y1)
+//        let end = CGPoint(x:x2,y:y2)
+//        treeData.append((position:[origin,end],angle:angle, depth:depth))
+//        
+//        generateTree(x1: x2, y1: y2, angle: angle - 20, depth: depth - 1)
+//        generateTree(x1: x2, y1: y2, angle: angle + 20, depth: depth - 1)
+//    }
+//    
+//    func drawTree(){
+//        for var line in treeData{
+//            let treeLine = Branch(origin: line.position[0], end: line.position[1], depth: line.depth, angle: line.angle, color: blue)
+//            gameBoard.addChild(treeLine)
+//        }
+//    }
 }
