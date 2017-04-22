@@ -11,23 +11,6 @@
 import UIKit
 import SpriteKit
 
-extension CGFloat {
-    func degrees_to_radians() -> CGFloat {
-        return CGFloat(Double.pi) * self / 180.0
-    }
-}
-
-extension CGPoint{
-    static func - (left: CGPoint, right: CGPoint) -> CGFloat{
-       return  sqrt((left.x - right.x)*(left.x-right.x)+(left.y-right.y)*(left.y-right.y))
-    }
-}
-
-extension Double {
-    func degrees_to_radians() -> Double {
-        return Double.pi * self / 180.0
-    }
-}
 
 class GameScene : SKScene{
     //MARK: Type Alias
@@ -41,8 +24,6 @@ class GameScene : SKScene{
     // MARK: Node
     let gameBoard = SKNode()
     var treeData = TreeData()
-    
-    
     // MARK: API
     override func didMove(to view: SKView) {
         
@@ -50,6 +31,10 @@ class GameScene : SKScene{
         //Set the Back Ground Color
         self.backgroundColor = BKGround
         self.addChild(gameBoard)
+        let action = #selector(GameScene.cut(sender:))
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action:action)
+        view.addGestureRecognizer(panGestureRecognizer)
+        
         
         let x = self.frame.size.width / 2
         let y = self.frame.size.height * 0.1
@@ -61,6 +46,27 @@ class GameScene : SKScene{
         
     }
     
+    
+    func cut( sender: UIPanGestureRecognizer){
+        switch sender.state{
+        case .began :
+            let point = SKSpriteNode(texture: nil, color:UIColor.red, size: CGSize(width: 3, height: 3))
+            var position = sender.location(in: sender.view)
+            position.y = self.frame.height - position.y
+            point.position = position
+            point.name = "point"
+            self.gameBoard.addChild(point)
+        case .changed:
+            let point = self.gameBoard.childNode(withName: "point") as! SKSpriteNode
+            var position = sender.location(in: sender.view)
+            position.y = self.frame.height - position.y
+            point.position = position
+        case .cancelled, .ended:
+            let point = self.gameBoard.childNode(withName: "point") as! SKSpriteNode
+            point.removeFromParent()
+        default: break
+        }
+    }
     func startTree(x1: CGFloat, y1: CGFloat, angle: Double, depth:Int){
         
         let ang = angle.degrees_to_radians()

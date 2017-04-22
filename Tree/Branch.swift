@@ -14,7 +14,7 @@ class Branch: SKSpriteNode{
     let end : CGPoint
     let depth : Int
     let angle : Double
-    var scaleAction = SKAction()
+
     
     init (origin:CGPoint, end: CGPoint, depth:Int, angle:Double, color:UIColor){
         self.origin = origin
