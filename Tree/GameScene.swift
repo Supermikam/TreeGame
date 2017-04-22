@@ -1,12 +1,5 @@
 
-
-//
-//  ClassicGameScene.swift
-//  Slow
-//
-//  Created by Ruohan Liu on 20/03/17.
-//  Copyright © 2017 Ruohan Liu. All rights reserved.
-//
+// the tree can grow by it self, all node children of the scene
 
 import UIKit
 import SpriteKit

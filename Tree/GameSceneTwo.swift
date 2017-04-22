@@ -1,3 +1,5 @@
+// the node tree has the same structure as the tree. 
+
 
 import UIKit
 import SpriteKit

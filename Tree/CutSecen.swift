@@ -42,6 +42,7 @@ class CutScene : SKScene{
         bNode = SKSpriteNode(texture: nil, color: UIColor.blue, size: CGSize(width: 20.0, height: 100.0))
         bNode.anchorPoint = CGPoint(x: 0.5, y: 0.0)
         let centerB = CGPoint(x: bNode.size.width/2, y:bNode.size.height/2)
+        bNode.zRotation = CGFloat(70.degrees_to_radians())
         bNode.physicsBody = SKPhysicsBody(rectangleOf: bNode.size , center: centerB)
         bNode.physicsBody?.categoryBitMask = UInt32(1)
         bNode.physicsBody?.isDynamic = false
@@ -84,6 +85,7 @@ class CutScene : SKScene{
             let pNode = node.parent as! SKSpriteNode
             cutNode.position = CGPoint(x:0.0, y: pNode.size.height)
             cutNode.name = name + "cut"
+            cutNode.zRotation = node.zRotation
             pNode.addChild(cutNode)
 
             node.yScale = (100.0-touchedAt.y)/100.0
