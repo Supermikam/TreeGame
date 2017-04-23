@@ -14,7 +14,7 @@ class BranchFour: SKSpriteNode{
     let angle : Double
     let parentBranch : String
     
-    init (length:CGFloat, depth:Int, angle:Double, color:UIColor, parentBranch: String){
+    init (length:CGFloat, depth:Int, angle:Double, color:UIColor, parentBranch: String, yPosition: CGFloat){
         self.depth = depth
         self.angle = angle
         self.parentBranch = parentBranch
@@ -27,7 +27,7 @@ class BranchFour: SKSpriteNode{
         
         self.anchorPoint = CGPoint(x:0.5,y:0.0)
         self.zRotation = CGFloat(angle.degrees_to_radians()-Double.pi/2)
-        self.position = CGPoint(x:0,y:length)
+        self.position = CGPoint(x:0,y:yPosition)
         
     }
     

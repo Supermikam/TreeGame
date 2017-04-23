@@ -1,8 +1,10 @@
 //physics body attached to branch after it is fully grown 
 //cut functions properly 
-// change gameboard to a Branch node, root branch can be cut now.
+//change gameboard to a Branch node, root branch can be cut now.
 //particle emitter used to track cut path
 //particle to be adjusted later
+//angle, length, branching, growing speed random noise added
+ 
 
 import UIKit
 import SpriteKit
@@ -32,16 +34,16 @@ class GameSceneFour : SKScene{
         
         //Set the Back Ground Color
         self.backgroundColor = BKGround
-        gameBoard = BranchFour(length: 1.0, depth: 10, angle: 90, color: blue, parentBranch: "Scene")
+        gameBoard = BranchFour(length: 1.0, depth: 10, angle: 90, color: blue, parentBranch: "Scene", yPosition: 0.0)
         gameBoard.position = CGPoint(x: self.frame.width/2, y: 30.0)
-        gameBoard.name = "Fixed Point"
+        gameBoard.name = "root"
         self.addChild(gameBoard)
         //let action = #selector(GameScene.cut(sender:))
         //let panGestureRecognizer = UIPanGestureRecognizer(target: self, action:action)
         //view.addGestureRecognizer(panGestureRecognizer)
         
         self.treeLengthBaseFactor = self.frame.width/60
-        let length = CGFloat(self.treeDepth) * self.treeLengthBaseFactor
+        let length = CGFloat(sqrt(Double(self.treeDepth))) * self.treeLengthBaseFactor
         
         startTree(length:length, angle: 90, depth: 9, parentName:"root")
         
@@ -57,18 +59,51 @@ class GameSceneFour : SKScene{
             return
         }
         
-        startTree(length:length, angle: 70, depth: depth, parentName: parentName, branchOrder: 1)
-        startTree(length:length, angle: 110, depth: depth, parentName: parentName, branchOrder: 2)
+        let leftAngle: UInt32 = arc4random_uniform(20)
+        let rightAngle: UInt32 = arc4random_uniform(20)
+        let leftAngleNoise: Int = Int(leftAngle) - 10
+        let rightAngleNoise: Int = Int(rightAngle) - 10
+        
+        let leftLengthNoise: CGFloat = CGFloat(Double(100 + leftAngleNoise * 3)/100)
+        let rightLengthNoise: CGFloat = CGFloat(Double(100 + rightAngleNoise * 3)/100)
+    
+        if depth <= 6{
+            let branchGrowthRate:UInt32 = arc4random_uniform(100)
+            if branchGrowthRate>=70{
+                let direction: UInt32 = arc4random_uniform(100)
+                if direction >= 50{
+                    startTree(length:length * rightLengthNoise, angle: Double(70 + rightAngleNoise), depth: depth, parentName: parentName, branchOrder: 1)
+                }else{
+                    startTree(length:length * leftLengthNoise, angle: Double(110 + leftAngleNoise), depth: depth, parentName: parentName, branchOrder: 2)
+                }
+            }else{
+                startTree(length:length, angle: Double(70 + rightAngleNoise), depth: depth, parentName: parentName, branchOrder: 1)
+                startTree(length:length, angle: Double(110 + leftAngleNoise), depth: depth, parentName: parentName, branchOrder: 2)
+            }
+        }else{
+            startTree(length:length, angle: Double(70 + rightAngleNoise), depth: depth, parentName: parentName, branchOrder: 1)
+            startTree(length:length, angle: Double(110 + leftAngleNoise), depth: depth, parentName: parentName, branchOrder: 2)
+        }
     }
     
     func generateBranchNode(length:CGFloat, depth:Int, angle:Double, parentName:String, branchOrder:Int){
-        let branch = BranchFour(length: length, depth: depth, angle: angle, color: blue, parentBranch:parentName)
+
+        var parentNode: BranchFour
+        if parentName == "root"{
+            parentNode = gameBoard
+        }else{
+            parentNode = gameBoard.childNode(withName: ".//\(parentName)") as! BranchFour
+        }
         
-        let scaleAction = SKAction.scaleY(to: 1.0, duration: 2.0)
+        let branch = BranchFour(length: length, depth: depth, angle: angle, color: blue, parentBranch:parentName, yPosition: parentNode.size.height )
+        
+        let Noise: UInt32 = arc4random_uniform(100)
+        let durationNoise = Double(Noise)/100.0
+
+        let scaleAction = SKAction.scaleY(to: 1.0, duration: (2.0 - durationNoise))
         branch.yScale = 0.01
         if (parentName == "root"){
             branch.name = "0"
-            branch.position = CGPoint(x:0.0,y:1.0)
         }else{
             let parentNumber = Int(parentName)
             let childNumber = parentNumber! * 2 + branchOrder
@@ -81,14 +116,17 @@ class GameSceneFour : SKScene{
             branch.physicsBody?.categoryBitMask = UInt32(1)
             branch.physicsBody?.isDynamic = false
             
-            let newLength = self.treeLengthBaseFactor * CGFloat(depth-1)
+            let newLength = self.treeLengthBaseFactor * CGFloat(sqrt(Double(depth-1)))
+                //* CGFloat(sqrt(sqrt((Double(self.treeDepth-depth+1)))))
+            
+            
             self.generateNewBranch(length:newLength, angle: angle, depth: depth-1, parentName: branch.name!)
         };
         if (parentName == "root"){
             
             gameBoard.addChild(branch)
         }else{
-            let parentNode = gameBoard.childNode(withName: ".//\(parentName)") as! SKSpriteNode
+            
             parentNode.addChild(branch)
         }
         
@@ -138,12 +176,16 @@ class GameSceneFour : SKScene{
             }
             
             //add a new branch node at the remain half of the branch
-            let touchedAt = branch.convert(point, from: self.scene!)
+            var touchedAt = branch.convert(point, from: self.scene!)
+            if touchedAt.y < 0 {
+                touchedAt.y = -touchedAt.y
+            }
             let parentNode = branch.parent as! BranchFour
-            let cutNode = BranchFour(length: touchedAt.y, depth: branch.depth, angle: branch.angle, color: blue, parentBranch: parentNode.name!)
+            let cutNode = BranchFour(length: touchedAt.y, depth: branch.depth, angle: branch.angle, color: blue, parentBranch: parentNode.name!, yPosition: parentNode.size.height)
             cutNode.position = CGPoint(x:0.0, y: parentNode.size.height)
             cutNode.physicsBody = SKPhysicsBody(rectangleOf: cutNode.size, center: CGPoint(x:cutNode.size.width/2, y:cutNode.size.height/2))
             cutNode.physicsBody?.isDynamic = false
+            
             cutNode.physicsBody?.categoryBitMask = UInt32(1)
             cutNode.name = name + "cut"
             parentNode.addChild(cutNode)
@@ -153,6 +195,7 @@ class GameSceneFour : SKScene{
             branch.yScale = (branch.size.height-touchedAt.y)/branch.size.height
             branch.position = CGPoint(x:0.0, y: touchedAt.y)
             branch.physicsBody?.isDynamic = true
+            branch.physicsBody?.allowsRotation = true
             
             let fadeAway = SKAction.fadeOut(withDuration: 0.25)
             let removeNode = SKAction.removeFromParent()
