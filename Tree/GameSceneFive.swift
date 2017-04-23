@@ -1,31 +1,27 @@
-//physics body attached to branch after it is fully grown 
-//cut functions properly 
-//change gameboard to a Branch node, root branch can be cut now.
-//particle emitter used to track cut path
-//particle to be adjusted later
-//angle, length, branching, growing speed random noise added
+//Use BranchFour
+//tree gets extra energy for growth when branches are cut
 
+import Foundation
 
 import UIKit
 import SpriteKit
 
 
 
-class GameSceneFour : SKScene{
-    //MARK: Type Alias
-    typealias TreeData = [(position:[CGPoint], angle: Double, depth: Int)]
-    
-    // MARK: Display property
-    
+class GameSceneFive : SKScene{
+    //MARK: Display property
     let blue = UIColor(red: 0.0, green: 0.7373, blue: 1.0, alpha: 1.0)
     let BKGround = UIColor(colorLiteralRed: 0.4, green: 0.5, blue: 0.6, alpha: 1.0)
     
     // MARK: Node
     var particles: SKEmitterNode?
     var gameBoard : BranchFour!
-    var treeData = TreeData()
+
     let treeDepth : Int = 9
     var treeLengthBaseFactor = CGFloat()
+    var treeSizeFactor : CGFloat = 1.0
+    var growingBranchNumber: Int = 0
+    
     // MARK: API
     override func didMove(to view: SKView) {
         
@@ -38,11 +34,7 @@ class GameSceneFour : SKScene{
         gameBoard.position = CGPoint(x: self.frame.width/2, y: 30.0)
         gameBoard.name = "root"
         self.addChild(gameBoard)
-        //let action = #selector(GameScene.cut(sender:))
-        //let panGestureRecognizer = UIPanGestureRecognizer(target: self, action:action)
-        //view.addGestureRecognizer(panGestureRecognizer)
-        
-        self.treeLengthBaseFactor = self.frame.width/60
+        self.treeLengthBaseFactor = self.frame.width/30
         let length = CGFloat(sqrt(Double(self.treeDepth))) * self.treeLengthBaseFactor
         
         startTree(length:length, angle: 90, depth: 9, parentName:"root")
@@ -66,28 +58,28 @@ class GameSceneFour : SKScene{
         
         let leftLengthNoise: CGFloat = CGFloat(Double(100 + leftAngleNoise * 3)/100)
         let rightLengthNoise: CGFloat = CGFloat(Double(100 + rightAngleNoise * 3)/100)
-    
-        if depth <= 6{
+        
+        if depth <= 5{
             let branchGrowthRate:UInt32 = arc4random_uniform(100)
             if branchGrowthRate>=70{
                 let direction: UInt32 = arc4random_uniform(100)
                 if direction >= 50{
-                    startTree(length:length * rightLengthNoise, angle: Double(70 + rightAngleNoise), depth: depth, parentName: parentName, branchOrder: 1)
+                    startTree(length:length * rightLengthNoise * treeSizeFactor, angle: Double(70 + rightAngleNoise), depth: depth, parentName: parentName, branchOrder: 1)
                 }else{
-                    startTree(length:length * leftLengthNoise, angle: Double(110 + leftAngleNoise), depth: depth, parentName: parentName, branchOrder: 2)
+                    startTree(length: length * leftLengthNoise * treeSizeFactor, angle: Double(110 + leftAngleNoise), depth: depth, parentName: parentName, branchOrder: 2)
                 }
             }else{
-                startTree(length:length, angle: Double(70 + rightAngleNoise), depth: depth, parentName: parentName, branchOrder: 1)
-                startTree(length:length, angle: Double(110 + leftAngleNoise), depth: depth, parentName: parentName, branchOrder: 2)
+                startTree(length:length * rightLengthNoise * treeSizeFactor, angle: Double(70 + rightAngleNoise), depth: depth, parentName: parentName, branchOrder: 1)
+                startTree(length:length * leftLengthNoise * treeSizeFactor, angle: Double(110 + leftAngleNoise), depth: depth, parentName: parentName, branchOrder: 2)
             }
         }else{
-            startTree(length:length, angle: Double(70 + rightAngleNoise), depth: depth, parentName: parentName, branchOrder: 1)
-            startTree(length:length, angle: Double(110 + leftAngleNoise), depth: depth, parentName: parentName, branchOrder: 2)
+            startTree(length:length * rightLengthNoise * treeSizeFactor, angle: Double(70 + rightAngleNoise), depth: depth, parentName: parentName, branchOrder: 1)
+            startTree(length:length * leftLengthNoise * treeSizeFactor, angle: Double(110 + leftAngleNoise), depth: depth, parentName: parentName, branchOrder: 2)
         }
     }
     
     func generateBranchNode(length:CGFloat, depth:Int, angle:Double, parentName:String, branchOrder:Int){
-
+        
         var parentNode: BranchFour
         if parentName == "root"{
             parentNode = gameBoard
@@ -97,9 +89,11 @@ class GameSceneFour : SKScene{
         
         let branch = BranchFour(length: length, depth: depth, angle: angle, color: blue, parentBranch:parentName, yPosition: parentNode.size.height )
         
+        //monitor how many branch is still growing
+        growingBranchNumber += 1
         let Noise: UInt32 = arc4random_uniform(100)
         let durationNoise = Double(Noise)/100.0
-
+        
         let scaleAction = SKAction.scaleY(to: 1.0, duration: (2.0 - durationNoise))
         branch.yScale = 0.01
         if (parentName == "root"){
@@ -115,10 +109,9 @@ class GameSceneFour : SKScene{
             branch.physicsBody = SKPhysicsBody(rectangleOf: branch.size, center: CGPoint(x:branch.size.width/2, y: branch.size.height/2))
             branch.physicsBody?.categoryBitMask = UInt32(1)
             branch.physicsBody?.isDynamic = false
+            self.growingBranchNumber -= 1
             
             let newLength = self.treeLengthBaseFactor * CGFloat(sqrt(Double(depth-1)))
-                //* CGFloat(sqrt(sqrt((Double(self.treeDepth-depth+1)))))
-            
             
             self.generateNewBranch(length:newLength, angle: angle, depth: depth-1, parentName: branch.name!)
         };
@@ -133,11 +126,11 @@ class GameSceneFour : SKScene{
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-      
+        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-
+        
         for touch in touches {
             let startPoint = touch.location(in: self)
             let endPoint = touch.previousLocation(in: self)
@@ -148,10 +141,10 @@ class GameSceneFour : SKScene{
                                                     self.cutTheBranchFromPoint(point, body: body)
             })
             
-            // produce some nice particles
+
             showMoveParticles(touchPosition: startPoint)
         }
-
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -162,12 +155,19 @@ class GameSceneFour : SKScene{
     func cutTheBranchFromPoint(_ point: CGPoint, body: SKPhysicsBody){
         let node = body.node!
         if let name = node.name {
-
+            
             let branch = node as! BranchFour
             
+            
             //stop end brach from growing
-            let children = branch.children
-            for childNode in children{
+            var allDecendents = [SKNode]()
+            allDecendents = getAllDecendants(node: branch)
+            
+            for childNode in allDecendents{
+                if childNode.yScale < 1.0 {
+                    growingBranchNumber -= 1
+                }
+                
                 if childNode.hasActions(){
                     childNode.removeAllActions()
                 }
@@ -180,7 +180,7 @@ class GameSceneFour : SKScene{
             }
             let parentNode = branch.parent as! BranchFour
             let cutNode = BranchFour(length: touchedAt.y, depth: branch.depth, angle: branch.angle, color: blue, parentBranch: parentNode.name!, yPosition: parentNode.size.height)
-            cutNode.position = CGPoint(x:0.0, y: parentNode.size.height)
+    
             cutNode.physicsBody = SKPhysicsBody(rectangleOf: cutNode.size, center: CGPoint(x:cutNode.size.width/2, y:cutNode.size.height/2))
             cutNode.physicsBody?.isDynamic = false
             
@@ -198,13 +198,65 @@ class GameSceneFour : SKScene{
             let fadeAway = SKAction.fadeOut(withDuration: 0.25)
             let removeNode = SKAction.removeFromParent()
             let sequence = SKAction.sequence([fadeAway, removeNode])
-            branch.run(sequence)
-            for childNode in children{
+            branch.run(sequence){
+                () -> Void in
+                if (self.hasLiveTipBranch() || self.growingBranchNumber > 0) && !branch.name!.contains("cut") {
+                    
+                    //let decendants = self.getAllDecendants(node: branch)
+                    //let scaleFactor = CGFloat(Double(decendants.count)/250.0 + 1.0)
+                    
+                    let scaleFactor = CGFloat(1.0 + sqrt(Double(branch.depth))/(Double(self.treeDepth - branch.depth)*Double(self.treeDepth - branch.depth) * 10.0))
+            
+                    self.treeSizeFactor *= scaleFactor
+        
+                    
+                    let resize = SKAction.scale(to: self.treeSizeFactor, duration: 0.5)
+                    //let trunc = self.gameBoard.childNode(withName: "0")
+                    //trunc?.run(resize)
+                    self.gameBoard.run(resize)
+                }else{
+                   
+                }
+            }
+            for childNode in allDecendents{
                 let theNode = childNode as! BranchFour
-                theNode.isUserInteractionEnabled = false
                 theNode.run(sequence)
             }
         }
+    }
+    
+    func hasLiveTipBranch() -> Bool{
+
+        var liveTipBranchCount : Int = 0
+        let allBranches = getAllDecendants(node: gameBoard)
+        for eachBranch in allBranches{
+            if let theBranch = eachBranch as? BranchFour{
+                if theBranch.depth == 1{
+                    liveTipBranchCount += 1
+                }
+            }
+        }
+        
+        if liveTipBranchCount > 0 {
+            return true
+        }else{
+            return false
+        }
+    }
+    
+    func getAllDecendants(node: SKNode) -> [SKNode]{
+        var decendants = [SKNode]()
+        let directChildren = node.children
+        if directChildren.count > 0{
+            decendants += directChildren
+            for eachNode in directChildren{
+                let grandChildren = getAllDecendants(node: eachNode)
+                if grandChildren.count > 0{
+                    decendants += grandChildren
+                }
+            }
+            return decendants
+        }else {return decendants}
     }
     
     func showMoveParticles(touchPosition: CGPoint) {
@@ -217,4 +269,3 @@ class GameSceneFour : SKScene{
         particles!.position = touchPosition
     }
 }
-
