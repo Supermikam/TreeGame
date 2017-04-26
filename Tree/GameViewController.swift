@@ -11,10 +11,9 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        let gameScene = GameSceneFive()
+        let gameScene = GameSceneSix()
         let skView = self.view as! SKView
         skView.ignoresSiblingOrder = true
         gameScene.size = self.view.bounds.size

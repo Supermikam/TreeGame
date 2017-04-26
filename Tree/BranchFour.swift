@@ -28,6 +28,7 @@ class BranchFour: SKSpriteNode{
         self.anchorPoint = CGPoint(x:0.5,y:0.0)
         self.zRotation = CGFloat(angle.degrees_to_radians()-Double.pi/2)
         self.position = CGPoint(x:0,y:yPosition)
+        self.zPosition = Layer.Tree
         
     }
     

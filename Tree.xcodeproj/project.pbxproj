@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB2CB8E71EB0948B009DE282 /* GameSceneSix.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2CB8E61EB0948B009DE282 /* GameSceneSix.swift */; };
 		BB53AAF81EA42D8C002667DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB53AAF71EA42D8C002667DB /* AppDelegate.swift */; };
 		BB53AAFE1EA42D8C002667DB /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB53AAFD1EA42D8C002667DB /* GameScene.swift */; };
 		BB53AB001EA42D8C002667DB /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB53AAFF1EA42D8C002667DB /* GameViewController.swift */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BB2CB8E61EB0948B009DE282 /* GameSceneSix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneSix.swift; sourceTree = "<group>"; };
 		BB53AAF41EA42D8C002667DB /* Tree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tree.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB53AAF71EA42D8C002667DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Tree/AppDelegate.swift; sourceTree = "<group>"; };
 		BB53AAFD1EA42D8C002667DB /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				BBE73F581EAB57570097515D /* GameSceneThree.swift */,
 				BBE855631EABF9A7007387C7 /* GameSceneFour.swift */,
 				BBE855761EAC6E53007387C7 /* GameSceneFive.swift */,
+				BB2CB8E61EB0948B009DE282 /* GameSceneSix.swift */,
 				BBA402F01EAB2F85003D3D0B /* CutSecen.swift */,
 			);
 			path = Tree;
@@ -341,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB53AAFE1EA42D8C002667DB /* GameScene.swift in Sources */,
+				BB2CB8E71EB0948B009DE282 /* GameSceneSix.swift in Sources */,
 				BBE855661EABF9B3007387C7 /* BranchFour.swift in Sources */,
 				BBE73F591EAB57570097515D /* GameSceneThree.swift in Sources */,
 				BBEF7FB81EA44BC80015530C /* Branch.swift in Sources */,
