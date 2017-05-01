@@ -1,10 +1,6 @@
-//
-//  BranchTwo.swift
-//  Tree
-//
-//  Created by Ruohan Liu on 22/04/17.
-//  Copyright © 2017 Ruohan Liu. All rights reserved.
-//
+//Class for branch
+//Requires length, YPosition to spesify the shape and position 
+//Stores depth, angle and parentBranch name
 
 import SpriteKit
 import UIKit
@@ -18,7 +14,6 @@ class BranchFour: SKSpriteNode{
         self.depth = depth
         self.angle = angle
         self.parentBranch = parentBranch
-        
         
         
         let size = CGSize(width: 2.0, height: length)
